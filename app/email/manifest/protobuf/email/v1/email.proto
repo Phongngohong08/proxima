@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package email.v1;
+
+option go_package = "proxima/app/email/api/email/v1";
+
+service Email {
+  rpc SendEmail(SendEmailReq) returns (SendEmailRes) {}
+}
+
+message SendEmailReq {
+  string to = 1; // v:required|email
+  string subject = 2; // v:required|min-length:1
+  string body = 3; // v:required|min-length:1
+}
+
+message SendEmailRes {
+  bool success = 1; // Indicates if the email was sent successfully
+  string message = 2; // Additional message or error description
+}
