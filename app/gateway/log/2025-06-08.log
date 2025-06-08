@@ -1,0 +1,54 @@
+2025-06-08T19:01:25.070+07:00 [INFO] pid[9048]: http server started listening on [:8000]
+2025-06-08T19:01:25.070+07:00 [INFO] {7cc68d518d0f47180587837e8bc429e4} swagger ui is serving at address: http://127.0.0.1:8000/swagger/
+2025-06-08T19:01:25.071+07:00 [INFO] {7cc68d518d0f47180587837e8bc429e4} openapi specification is serving at address: http://127.0.0.1:8000/api.json
+2025-06-08T19:01:25.099+07:00 [DEBU] {7cc68d518d0f47180587837e8bc429e4} service register: &{Head: Deployment: Namespace: Name:default Version: Endpoints:192.168.239.1:8000,192.168.229.1:8000,192.168.31.198:8000,172.22.128.1:8000 Metadata:map[insecure:true protocol:http]}
+2025-06-08T19:01:30.100+07:00 [FATA] {7cc68d518d0f47180587837e8bc429e4} etcd grant failed with keepalive ttl "10s": context deadline exceeded
+1. etcd grant failed with keepalive ttl "10s"
+   1).  proxima/app/gateway/internal/cmd.init.func1
+        C:/Users/ngoho/go/src/proxima/app/gateway/internal/cmd/cmd.go:30
+   2).  main.main
+        C:/Users/ngoho/go/src/proxima/app/gateway/main.go:22
+2. context deadline exceeded
+ 
+Stack:
+1.  proxima/app/gateway/internal/cmd.init.func1
+    C:/Users/ngoho/go/src/proxima/app/gateway/internal/cmd/cmd.go:30
+2.  main.main
+    C:/Users/ngoho/go/src/proxima/app/gateway/main.go:22
+
+2025-06-08T19:02:05.198+07:00 [INFO] pid[15860]: http server started listening on [:8000]
+2025-06-08T19:02:05.198+07:00 [INFO] {cc5ae808970f4718ee26e54288756a4e} swagger ui is serving at address: http://127.0.0.1:8000/swagger/
+2025-06-08T19:02:05.199+07:00 [INFO] {cc5ae808970f4718ee26e54288756a4e} openapi specification is serving at address: http://127.0.0.1:8000/api.json
+2025-06-08T19:02:05.219+07:00 [DEBU] {cc5ae808970f4718ee26e54288756a4e} service register: &{Head: Deployment: Namespace: Name:default Version: Endpoints:192.168.239.1:8000,192.168.229.1:8000,192.168.31.198:8000,172.22.128.1:8000 Metadata:map[insecure:true protocol:http]}
+
+  ADDRESS | METHOD |      ROUTE      |                               HANDLER                                |           MIDDLEWARE             
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | ALL    | /api.json       | github.com/gogf/gf/v2/net/ghttp.(*Server).openapiSpec                |                                  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | ALL    | /swagger/*      | github.com/gogf/gf/v2/net/ghttp.(*Server).swaggerUI                  | HOOK_BEFORE_SERVE                
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | POST   | /v1/users/login | proxima/app/gateway/internal/controller/user.(*ControllerV1).Login   | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | POST   | /v1/words       | proxima/app/gateway/internal/controller/words.(*ControllerV1).Create | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | GET    | /v1/words/{id}  | proxima/app/gateway/internal/controller/words.(*ControllerV1).Detail | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+
+2025-06-08T19:10:53.806+07:00 [INFO] pid[9100]: http server started listening on [:8000]
+2025-06-08T19:10:53.806+07:00 [INFO] {94fc7fcd111047181f041427c455121f} swagger ui is serving at address: http://127.0.0.1:8000/swagger/
+2025-06-08T19:10:53.808+07:00 [INFO] {94fc7fcd111047181f041427c455121f} openapi specification is serving at address: http://127.0.0.1:8000/api.json
+2025-06-08T19:10:53.832+07:00 [DEBU] {94fc7fcd111047181f041427c455121f} service register: &{Head: Deployment: Namespace: Name:default Version: Endpoints:192.168.239.1:8000,192.168.229.1:8000,192.168.31.198:8000,172.22.128.1:8000 Metadata:map[insecure:true protocol:http]}
+
+  ADDRESS | METHOD |      ROUTE      |                               HANDLER                                |           MIDDLEWARE             
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | ALL    | /api.json       | github.com/gogf/gf/v2/net/ghttp.(*Server).openapiSpec                |                                  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | ALL    | /swagger/*      | github.com/gogf/gf/v2/net/ghttp.(*Server).swaggerUI                  | HOOK_BEFORE_SERVE                
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | POST   | /v1/users/login | proxima/app/gateway/internal/controller/user.(*ControllerV1).Login   | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | POST   | /v1/words       | proxima/app/gateway/internal/controller/words.(*ControllerV1).Create | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+  :8000   | GET    | /v1/words/{id}  | proxima/app/gateway/internal/controller/words.(*ControllerV1).Detail | ghttp.MiddlewareHandlerResponse  
+----------|--------|-----------------|----------------------------------------------------------------------|----------------------------------
+
