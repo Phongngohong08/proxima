@@ -2,7 +2,6 @@ package email
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"net/smtp"
 	v1 "proxima/app/email/api/email/v1"
@@ -21,83 +20,30 @@ func Register(s *grpcx.GrpcServer) {
 func (*Controller) SendEmail(ctx context.Context, req *v1.SendEmailReq) (res *v1.SendEmailRes, err error) {
 	// Thông tin email người gửi (hardcoded)
 	from := "phongngohong18@gmail.com"
-	password := "your_password_or_app_specific_password"
+	password := "your-email-password" // Thay thế bằng mật khẩu email của bạn
 
-	// Thông tin email người nhận (hardcoded)
-	to := []string{
-		"ngohongphong18@gmail.com",
-	}
-
-	// Cấu hình SMTP server
+	// Cấu hình SMTP server Gmail
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
-	// Nội dung email
-	message := []byte(req.Subject + "\n" + req.Body)
-
-	// Xác thực với SMTP server
+	// Tạo auth
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
-	// Gửi email (có thể cần tls.Config nếu dùng port 465)
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-		ServerName:         smtpHost,
-	}
+	// Tạo nội dung email với header đầy đủ
+	message := fmt.Sprintf("To: %s\r\nSubject: %s\r\n\r\n%s", req.To, req.Subject, req.Body)
 
-	// Kết nối và gửi email
-	conn, err := tls.Dial("tcp", smtpHost+":"+smtpPort, tlsConfig)
+	// Gửi email đơn giản sử dụng smtp.SendMail (tự động xử lý TLS)
+	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{req.To}, []byte(message))
+
 	if err != nil {
-		fmt.Println("Error connecting to SMTP server:", err)
-		return
+		fmt.Printf("Error sending email: %v\n", err)
+		return &v1.SendEmailRes{
+			Success: false,
+			Message: fmt.Sprintf("Failed to send email: %v", err),
+		}, nil
 	}
 
-	client, err := smtp.NewClient(conn, smtpHost)
-	if err != nil {
-		fmt.Println("Error creating SMTP client:", err)
-		return
-	}
-
-	// Xác thực
-	if err = client.Auth(auth); err != nil {
-		fmt.Println("Error authenticating:", err)
-		return
-	}
-
-	// Thiết lập người gửi và người nhận
-	if err = client.Mail(from); err != nil {
-		fmt.Println("Error setting sender:", err)
-		return
-	}
-
-	for _, addr := range to {
-		if err = client.Rcpt(addr); err != nil {
-			fmt.Println("Error setting recipient:", err)
-			return
-		}
-	}
-
-	// Gửi nội dung email
-	w, err := client.Data()
-	if err != nil {
-		fmt.Println("Error preparing to send data:", err)
-		return
-	}
-
-	_, err = w.Write(message)
-	if err != nil {
-		fmt.Println("Error writing message:", err)
-		return
-	}
-
-	err = w.Close()
-	if err != nil {
-		fmt.Println("Error closing writer:", err)
-		return
-	}
-
-	// Đóng kết nối
-	client.Quit()
-
+	fmt.Printf("Email sent successfully to: %s\n", req.To)
 	return &v1.SendEmailRes{
 		Success: true,
 		Message: "Email sent successfully!",
